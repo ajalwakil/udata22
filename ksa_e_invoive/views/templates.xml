@@ -1,0 +1,90 @@
+<odoo>
+    <template id="external_layout_invoice">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+        <t t-if="not company">
+            <!--  Multicompany  -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+        <div t-attf-class="header o_company_#{company.id}_layout">
+            <div class="pull-left text-center" style="width:33%; display: inline-block !important">
+                <div>
+                    <h5 style="color:blue" t-if="company.name">
+                        <span t-field="company.name"/>
+                    </h5>
+                    <br/>
+                    <span t-if="company.vat">Vat NO
+                        <span class="" t-field="company.vat"/>
+                    </span>
+                    <br/>
+                    <span t-if="company.phone">Phone
+                        <span class="" t-field="company.phone"/>
+                    </span>
+                    <br/>
+                    <span>
+                        <span class="" t-field="company.street"/>
+                        <br/>
+                        <span t-field="company.state_id.name"/>
+                        <span t-field="company.zip"/>
+                    </span>
+                    <br/>
+                </div>
+            </div>
+
+            <center style="display: inline-block !important;margin-left:60px">
+                <img t-if="company.logo"
+                     t-att-src="image_data_uri(company.logo)"
+                     alt="Logo" height="120px" width="120px"/>
+
+            </center>
+
+            <div class="pull-right text-center" style="width:33%;display: inline-block !important">
+                <div>
+                    <h5 style="color:blue"  dir="rtl" t-if="company.name">
+                        <span t-field="company.arabic_name"/>
+                    </h5>
+                    <br/>
+                    <span t-if="company.vat">
+                        <span class="" t-field="company.vat"/>
+                    </span>
+                    الرقم الضريبي
+                    <br/>
+                    <span t-if="company.phone">
+                        <span class="" t-field="company.phone"/>
+                    </span>
+                    الهاتف
+                    <br/>
+                    <span dir="rtl">
+                        <span class="" t-field="company.arabic_address"/>
+                    </span>
+                    <br/>
+                </div>
+            </div>
+        </div>
+        <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout"
+             t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-raw="0"/>
+        </div>
+
+
+        <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+            <div t-if="report_type == 'pdf'" class="text-muted">
+                Page:
+                <span class="page"/>
+                /
+                <span class="topage"/>
+            </div>
+        </div>
+
+    </template>
+
+
+</odoo>
