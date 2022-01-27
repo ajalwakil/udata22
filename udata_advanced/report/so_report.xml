@@ -201,7 +201,16 @@
 
                     <div class="oe_structure"/>
 
-                    <p t-field="doc.note"/>
+                    <p t-if="doc.sale_terms_and_conditions" name="comment"
+                       style="width:49%;display: inline-block !important">
+                        <span t-field="doc.sale_terms_and_conditions"/>
+                    </p>
+
+                    <p class="pull-right text-right" t-if="doc.arabic_sale_terms_and_conditions" name="comment"
+                       style="width:49%;display: inline-block !important">
+                        <span t-field="doc.arabic_sale_terms_and_conditions"/>
+                    </p>
+
                     <p t-if="not is_html_empty(doc.payment_term_id.note)">
                         <span t-field="doc.payment_term_id.note"/>
                     </p>
@@ -231,7 +240,7 @@
         <field name="dpi">90</field>
     </record>
 
-  <record id="sale.action_report_saleorder" model="ir.actions.report">
+    <record id="sale.action_report_saleorder" model="ir.actions.report">
         <field name="paperformat_id" ref="udata_advanced.paperformat_report_so"/>
     </record>
 

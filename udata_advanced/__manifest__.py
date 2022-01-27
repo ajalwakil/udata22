@@ -15,5 +15,6 @@
     'data': [
         'report/so_report.xml',
         'views/sale_order_view.xml',
+        'views/res_config_settings_view.xml',
     ],
 }

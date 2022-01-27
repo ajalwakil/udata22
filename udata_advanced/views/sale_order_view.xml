@@ -11,9 +11,19 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="client_order_ref" />
-                <field name="source_id" />
+                <field name="client_order_ref"/>
+                <field name="source_id"/>
             </xpath>
+            <xpath expr="//page[last()]" position="after">
+                <page string="Terms and Conditions" name="terms_and_conditions">
+                    <field name="sale_terms_and_conditions" placeholder="Terms and Conditions...."
+                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="arabic_sale_terms_and_conditions" placeholder="Arabic Terms and Conditions...."
+                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                </page>
+            </xpath>
+
         </field>
     </record>
 
