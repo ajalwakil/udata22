@@ -4,6 +4,11 @@ import datetime
 from odoo.exceptions import ValidationError
 from odoo import models, fields, api
 
+import base64
+import datetime
+import struct
+import uuid
+
 
 class Accountmove(models.Model):
     _inherit = "account.move"
@@ -49,28 +54,33 @@ class Accountmove(models.Model):
     def _compute_amount_discount(self):
         self.amount_discount = round(sum(line.amount_discount for line in self.invoice_line_ids), 2)
 
-    #
+
+
+    def qr_encoding_value(self, number, value):
+        value = value.encode('UTF-8')
+        number = struct.pack("B", number)
+        length_encoding = struct.pack("B", len(value))
+
+        return number + length_encoding + value
+
     def qrcode_info(self, vendor):
         if not self.env.company.vat:
             raise ValidationError(_("company vat is empty"))
 
-        # 1- partner name
-        info = vendor.name
+        vendor_name = self.qr_encoding_value(1, vendor.display_name)
+        vendor_vat = self.qr_encoding_value(2, vendor.vat)
 
-        # 2- TIN
-        if vendor.vat:
-            info += "\n" + vendor.vat
+        time_sa = fields.Datetime.context_timestamp(self.with_context(tz='Asia/Riyadh'),
+                                                    fields.Datetime.from_string(
+                                                        (self.confirm_date or self.create_date)))
+        timestamp_invoice = self.qr_encoding_value(3, time_sa.isoformat())
 
-        # 3- total with tax
-        info += "\n" + str(self.amount_total)
+        total = self.qr_encoding_value(4, str(self.amount_total))
+        amount_tax = self.qr_encoding_value(5, str(self.currency_id.round(self.amount_tax)))
 
-        # 4- amount tax
-        info += "\n" + str(self.amount_tax)
+        str_to_encode = vendor_name + vendor_vat + timestamp_invoice + total + amount_tax
 
-        # 5- time now
-        info += "\n" + str(self.confirm_date and self.confirm_date.strftime("%d/%m/%Y %H:%M") or self.create_date.strftime("%d/%m/%Y %H:%M") or  '')
-
-        return info
+        return base64.b64encode(str_to_encode).decode('UTF-8')
 
 
 
@@ -78,25 +88,6 @@ class Accountmove(models.Model):
     def _compute_amount_discount(self):
         self.amount_discount = sum(line.amount_discount for line in self.invoice_line_ids)
 
-    #
-    def qrcode_info(self, vendor):
-        # 1- partner name
-        info = vendor.name
-
-        # 2- TIN
-        if vendor.vat:
-            info += "\n" + vendor.vat
-
-        # 3- total with tax
-        info += "\n" + str(self.amount_total)
-
-        # 4- amount tax
-        info += "\n" + str(self.amount_tax)
-
-        # 5- time now
-        info += "\n" + str(datetime.datetime.now().strftime("%d/%m/%Y %H:%M"))
-
-        return info
 
 
 class AccountMoveLine(models.Model):

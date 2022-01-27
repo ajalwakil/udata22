@@ -15,7 +15,6 @@
     'data': [
         'security/ir.model.access.csv',
         'report/report_tax_invoice.xml',
-        'report/so_report.xml',
         'views/templates.xml',
         'views/account_invoice_view.xml',
         'views/res_company_view.xml',
