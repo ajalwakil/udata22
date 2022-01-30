@@ -31,7 +31,7 @@
 
                         <div class="" style="display: inline-block !important">
                             <img style="margin-top:-100px"
-                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR',doc.name, 75, 75)"/>
+                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR',doc.get_portal_url(), 75, 75)"/>
                         </div>
 
                         <p t-if="doc.partner_id.vat"><t
