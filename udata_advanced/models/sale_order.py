@@ -30,7 +30,8 @@ class SaleOrder(models.Model):
                     })
         return res
 
+    def _get_url_order(self):
 
-
+        return 'https://udata22.odoo.com' + self.get_portal_url()
 
 
