@@ -406,7 +406,7 @@
                     </table>
                     <table class="table ">
                         <tr>
-                            <td class="none-border" width="40%"></td>
+                            <td style="border:medium none !important;" width="40%"></td>
                             <td style="border: 1px solid black;">Total excluding VAT</td>
                             <td style="border: 1px solid black;" class="text-center">
                                 اﻹجمالي غير شامل الصريبة
@@ -423,7 +423,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="none-borde" width="40%"></td>
+                            <td style="border:medium none !important;" width="40%"></td>
                             <td style="border: 1px solid black;">Discount</td>
                             <td style="border: 1px solid black;" class="text-center">
                                 مجموع الخصومات
@@ -434,7 +434,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="none-borde" width="40%"></td>
+                            <td style="border:medium none !important;" width="40%"></td>
                             <td style="border: 1px solid black;">Total Taxable Amount
                             </td>
                             <td style="border: 1px solid black;" class="text-center">
@@ -446,7 +446,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="none-borde" width="40%"></td>
+                            <td style="border:medium none !important;" width="40%"></td>
                             <td style="border: 1px solid black;">Total VAT
                             </td>
                             <td style="border: 1px solid black;" class="text-center">
@@ -458,7 +458,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="none-borde" width="40%"></td>
+                            <td style="border:medium none !important;" width="40%"></td>
                             <td style="border: 1px solid black;">Total Amount Due
                             </td>
                             <td style="border: 1px solid black;" class="text-center">
