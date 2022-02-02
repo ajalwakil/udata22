@@ -163,6 +163,18 @@
                                     <Strong>الفرع</Strong>
                                 </div>
                             </div>
+                            <div class="row border-gray">
+                                <div class="col-4">
+                                    <Strong>Payment Terms</Strong>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <span t-field="o.invoice_payment_term_id.name"/>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <Strong>شروط الدفع</Strong>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="col-3 force-right" style="margin-left: 130px">
                             <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR',o.qrcode_info(vendor), 100, 100)"/>
@@ -171,16 +183,16 @@
                     </div>
                     <div class="oe_structure"/>
                     <div class="small-font small-div">
-                        <table class="table table-bordered none-border">
+                        <table class="table table-bordered none-border" style="margin:0px;padding:0px">
                             <tr class="none-border">
                                 <td class="no-padding none-border">
-                                    <Strong class="force-left ">Buyer :</Strong>
+                                    <Strong class="force-left ">Customer :</Strong>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.name"/>
+                                    <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["name"]}'/>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.arabic_name"/>
+                                    <span t-esc="customer.parent_id.arabic_name"/>
                                 </td>
                                 <td class="text-right no-padding none-border">
                                     <Strong class="force-right">: العميل</Strong>
@@ -192,10 +204,10 @@
                                     <Strong class="force-left none-border">Building No :</Strong>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.building_no"/>
+                                    <span t-esc="customer.parent_id.parent_id.building_no"/>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.arabic_building_no"/>
+                                    <span t-esc="customer.parent_id.arabic_building_no"/>
                                 </td>
                                 <td class="text-right no-padding none-border">
                                     <Strong class="force-right">: رقم المبنى</Strong>
@@ -206,10 +218,10 @@
                                     <Strong class="force-left">Street Name :</Strong>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.street"/>
+                                    <span t-esc="customer.parent_id.street"/>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.arabic_street"/>
+                                    <span t-esc="customer.parent_id.arabic_street"/>
                                 </td>
                                 <td class="text-right no-padding none-border">
                                     <Strong class="force-right">: اسم الشارع</Strong>
@@ -221,12 +233,12 @@
                                     <Strong class="force-left">City /District</Strong>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.city"/>/
-                                    <span t-esc="customer.district"/>
+                                    <span t-esc="customer.parent_id.city"/>/
+                                    <span t-esc="customer.parent_id.district"/>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.arabic_city"/>/
-                                    <span t-esc="customer.arabic_district"/>
+                                    <span t-esc="customer.parent_id.arabic_city"/>/
+                                    <span t-esc="customer.parent_id.arabic_district"/>
                                 </td>
                                 <td class="text-right no-padding none-border">
                                     <Strong class="force-right">المدينة/ الحي</Strong>
@@ -238,10 +250,10 @@
                                     <Strong class="force-left">Country :</Strong>
                                 </td>
                                 <td class="text-center none-border no-padding">
-                                    <span t-esc="customer.country_id.name"/>
+                                    <span t-esc="customer.parent_id.country_id.name"/>
                                 </td>
                                 <td class="text-center none-border no-padding">
-                                    <span t-esc="customer.arabic_country_id"/>
+                                    <span t-esc="customer.parent_id.arabic_country_id"/>
                                 </td>
                                 <td class="text-right no-padding none-border">
                                     <Strong class="force-right">: البلد</Strong>
@@ -253,33 +265,33 @@
                                     <Strong class="force-left">Postal Code :</Strong>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.postal_code"/>
+                                    <span t-esc="customer.parent_id.postal_code"/>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.arabic_postal_code"/>
+                                    <span t-esc="customer.parent_id.arabic_postal_code"/>
                                 </td>
                                 <td class="text-right no-padding none-border">
                                     <Strong class="force-right">: الرمز البريد</Strong>
                                 </td>
 
                             </tr>
+                        </table>
+                        <table class="table table-bordered none-border" style="margin:0px;padding:0px">
                             <tr class="none-border">
                                 <td class="none-border">
                                     <Strong class="force-left">VAT Number:</Strong>
                                 </td>
                                 <td class="text-center none-border">
-                                    <span t-esc="customer.vat"/>
+                                    <span t-esc="customer.parent_id.vat"/>
                                 </td>
-                                <td class="text-center none-border">
-                                    <span t-esc="customer.vat"/>
-                                </td>
-
                                 <td class="text-right none-border">
                                     <Strong class="force-right">: رقم تسجيل الضريبة</Strong>
                                 </td>
 
                             </tr>
+
                         </table>
+
 
                     </div>
 
@@ -411,7 +423,7 @@
                             <td style="border: 1px solid black;" class="text-center">
                                 اﻹجمالي غير شامل الصريبة
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td style="border: 1px solid black;;text-align: right !important;">
                                 <t t-set="line_total" t-value="0"/>
                                 <t t-set="total" t-value="0"/>
                                 <t t-foreach="lines" t-as="line">
@@ -428,9 +440,9 @@
                             <td style="border: 1px solid black;" class="text-center">
                                 مجموع الخصومات
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td style="border: 1px solid black;text-align: right !important;">
                                 <span style="padding:10px" t-field="o.amount_discount"
-                                      t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                      t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
                             </td>
                         </tr>
                         <tr>
@@ -440,7 +452,7 @@
                             <td style="border: 1px solid black;" class="text-center">
                                 الإجمالي الخاضع للضريبة
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td style="border: 1px solid black;;text-align: right !important;">
                                 <span style="padding:10px" t-field="o.amount_untaxed"
                                       t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
@@ -452,7 +464,7 @@
                             <td style="border: 1px solid black;" class="text-center">
                                 مجموع الضريبة
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td style="border: 1px solid black;;text-align: right !important;">
                                 <span style="padding:10px" t-field="o.amount_tax"
                                       t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
@@ -464,18 +476,12 @@
                             <td style="border: 1px solid black;" class="text-center">
                                 إجمالي المبلغ المستحق
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td style="border: 1px solid black;;text-align: right !important;">
                                 <span style="padding:10px" t-field="o.amount_total"
                                       t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
                         </tr>
                     </table>
-                    <p t-if="o.invoice_payment_term_id" name="payment_term">
-                        <span t-field="o.invoice_payment_term_id.note"/>
-                    </p>
-                    <p t-if="o.fiscal_position_id.note" name="note">
-                        <span t-field="o.fiscal_position_id.note"/>
-                    </p>
 
                     <p t-if="o.invoice_terms_and_conditions" name="comment" style="width:49%;display: inline-block !important">
                         <span t-field="o.invoice_terms_and_conditions"/>
