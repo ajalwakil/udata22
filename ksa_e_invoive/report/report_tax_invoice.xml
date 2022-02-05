@@ -421,7 +421,7 @@
                             <td style="border:medium none !important;" width="40%"></td>
                             <td style="border: 1px solid black;">Total excluding VAT</td>
                             <td style="border: 1px solid black;" class="text-center">
-                                اﻹجمالي غير شامل الصريبة
+                                اﻹجمالي غير شامل الضريبة
                             </td>
                             <td style="border: 1px solid black;;text-align: right !important;">
                                 <t t-set="line_total" t-value="0"/>
