@@ -202,7 +202,16 @@
                                             <strong>Discount</strong>
                                         </td>
                                         <td name="td_amount_untaxed" class="text-right">
-                                            <span t-field="doc.total_amount_discount"/>
+                                            <t t-set="current_subtotal" t-value="0"/>
+                                            <t t-foreach="doc.order_line" t-as="line">
+                                                <t t-set="current_subtotal"
+                                                   t-value="current_subtotal + (line.price_unit * line.discount / 100) * line.product_uom_qty or 0"/>
+                                            </t>
+
+                                            <span t-esc="current_subtotal"
+                                                  t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+
+
                                         </td>
                                     </tr>
 

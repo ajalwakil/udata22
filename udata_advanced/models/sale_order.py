@@ -23,7 +23,7 @@ class SaleOrder(models.Model):
         for order in self:
             amount_discount =  0
             for line in self.order_line:
-                amount_discount = line.discount != 0 and (line.price_unit * line.discount / 100) * line.product_uom_qty or 0
+                amount_discount = (line.price_unit * line.discount / 100) * line.product_uom_qty or 0
             order.total_amount_discount = round(amount_discount, 2)
 
 
