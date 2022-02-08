@@ -23,13 +23,15 @@
                 <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
                 <div class="page" style="margin-top:50px">
                     <div class="oe_structure"/>
-                    <div class="pull-right" style="width:40%">
+
+                    <div class="pull-right">
+
                         <div t-field="doc.partner_id" style="line-height: 100%;display: inline-block !important"
                              t-options='{"widget": "contact", "fields": ["address", "name", "phone", "mobile", "email"], "phone_icons": True, "no_marker": True}'/>
 
-                        <div class="" style="display: inline-block !important;float:right">
-                            <img style="float:right"
-                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR',doc._get_url_order(), 75, 75)"/>
+                        <div class="" style="display: inline-block !important">
+                            <img style="margin-top:-100px"
+                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR',doc.name, 75, 75)"/>
                         </div>
 
                         <p t-if="doc.partner_id.vat"><t
@@ -68,9 +70,7 @@
                         </div>
 
                     </div>
-
                     <div class="row mt32 mb32" id="informations" style="width:60%">
-
                         <div t-if="doc.client_order_ref" class="col-auto col-3 mw-100 mb-2">
                             <strong>Your Reference:</strong>
                             <p class="m-0" t-field="doc.client_order_ref"/>
@@ -80,11 +80,6 @@
                             <strong>Salesperson:</strong>
                             <p class="m-0" t-field="doc.user_id"/>
                         </div>
-                        <div t-if="doc.payment_term_id" class="col-auto col-3 mw-100 mb-2">
-                            <strong>Payment Tearms:</strong>
-                            <p class="m-0" t-field="doc.payment_term_id.name"/>
-                        </div>
-
                     </div>
                     <br/>
 
@@ -132,6 +127,7 @@
                                         </td>
                                         <td name="td_quantity" class="text-right">
                                             <span t-field="line.product_uom_qty"/>
+                                            <span t-field="line.product_uom"/>
                                         </td>
                                         <td name="td_priceunit" class="text-right">
                                             <span t-field="line.price_unit"/>
@@ -183,73 +179,37 @@
                         <div id="total" class="row" name="total">
                             <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
                                 <table class="table table-sm">
-                                    <tr class="border-black o_subtotal" style="">
-                                        <td name="td_amount_untaxed_label">
-                                            <strong>Subtotal</strong>
-                                        </td>
-                                        <td name="td_amount_untaxed" class="text-right">
-                                            <t t-set="current_subtotal" t-value="0"/>
-                                            <t t-foreach="doc.order_line" t-as="line">
-                                                <t t-set="current_subtotal"
-                                                   t-value="current_subtotal + (line.product_uom_qty * line.price_unit)"/>
-                                            </t>
-
-                                            <span t-esc="current_subtotal" t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-black o_subtotal" style="">
-                                        <td name="td_amount_untaxed_label">
-                                            <strong>Discount</strong>
-                                        </td>
-                                        <td name="td_amount_untaxed" class="text-right">
-                                            <span t-field="doc.total_amount_discount"/>
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-black o_subtotal" style="">
-                                        <td name="td_amount_untaxed_label">
-                                            <strong>Net</strong>
-                                        </td>
-                                        <td name="td_amount_untaxed" class="text-right">
-                                            <span t-field="doc.amount_untaxed"/>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-black o_subtotal" style="">
-                                        <td name="">
-                                            <strong>Vat</strong>
-                                        </td>
-                                        <td name="" class="text-right">
-                                            <span t-field="doc.amount_tax"/>
-                                        </td>
-                                    </tr>
-
-                                    <tr class="border-black o_total">
-                                        <td name="td_amount_total_label">
-                                            <strong>Total</strong>
-                                        </td>
-                                        <td name="td_amount_total" class="text-right">
-                                            <span t-field="doc.amount_total"/>
-                                        </td>
-                                    </tr>
+                                    <!-- Tax totals -->
+                                    <t t-set="tax_totals" t-value="json.loads(doc.tax_totals_json)"/>
+                                    <t t-call="account.document_tax_totals"/>
                                 </table>
                             </div>
                         </div>
                     </div>
 
+                    <div t-if="doc.signature" class="mt32 ml64 mr4" name="signature">
+                        <div class="offset-8">
+                            <strong>Signature</strong>
+                        </div>
+                        <div class="offset-8">
+                            <img t-att-src="image_data_uri(doc.signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                        </div>
+                        <div class="offset-8 text-center">
+                            <p t-field="doc.signed_by"/>
+                        </div>
+                    </div>
 
                     <div class="oe_structure"/>
 
-                    <p t-if="doc.sale_terms_and_conditions" name="comment"
-                       style="width:49%;display: inline-block !important">
-                        <span t-field="doc.sale_terms_and_conditions"/>
+                    <p t-field="doc.note"/>
+                    <p t-if="not is_html_empty(doc.payment_term_id.note)">
+                        <span t-field="doc.payment_term_id.note"/>
                     </p>
-
-                    <p class="pull-right text-right" t-if="doc.arabic_sale_terms_and_conditions" name="comment"
-                       style="width:49%;display: inline-block !important">
-                        <span t-field="doc.arabic_sale_terms_and_conditions"/>
+                    <p id="fiscal_position_remark"
+                       t-if="doc.fiscal_position_id and not is_html_empty(doc.fiscal_position_id.sudo().note)">
+                        <strong>Fiscal Position Remark:</strong>
+                        <span t-field="doc.fiscal_position_id.sudo().note"/>
                     </p>
-
-
                 </div>
             </t>
         </xpath>
@@ -271,7 +231,7 @@
         <field name="dpi">90</field>
     </record>
 
-    <record id="sale.action_report_saleorder" model="ir.actions.report">
+  <record id="sale.action_report_saleorder" model="ir.actions.report">
         <field name="paperformat_id" ref="udata_advanced.paperformat_report_so"/>
     </record>
 

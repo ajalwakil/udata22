@@ -9,7 +9,6 @@ class ResPartner(models.Model):
 
 
 
-    commercial_register = fields.Char(string="Commercial Register", copy=False)
     building_no = fields.Char(string="Building No", copy=False)
     district = fields.Char(string="District", copy=False)
     postal_code = fields.Char(string="Postal Code", copy=False)

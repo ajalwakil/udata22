@@ -13,10 +13,7 @@
     'version': '14.1.2.0.0',
     'depends': ['sale'],
     'data': [
-        # 'security/ir.model.access.csv',
         'report/so_report.xml',
         'views/sale_order_view.xml',
-        'views/res_config_settings_view.xml',
-        # 'views/sale_order_history_view.xml',
     ],
 }
