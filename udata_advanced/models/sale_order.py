@@ -19,7 +19,6 @@ class SaleOrder(models.Model):
     sale_order_ids = fields.One2many(comodel_name="sale.order", inverse_name="sale_reversion_id",  string="Sales Orders", required=False, readonly=1)
 
 
-    @api.depends("order_line")
     def _compute_amount_discount(self):
         for order in self:
             amount_discount =  0
