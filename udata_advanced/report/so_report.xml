@@ -23,12 +23,12 @@
                 <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
                 <div class="page" style="margin-top:50px">
                     <div class="oe_structure"/>
-                    <div class="pull-right" style="width:40%">
+                    <div class="pull-right">
                         <div t-field="doc.partner_id" style="line-height: 100%;display: inline-block !important"
                              t-options='{"widget": "contact", "fields": ["address", "name", "phone", "mobile", "email"], "phone_icons": True, "no_marker": True}'/>
 
-                        <div class="" style="display: inline-block !important;float:right">
-                            <img style="float:right"
+                        <div class="" style="display: inline-block !important">
+                            <img style="margin-top:-100px"
                                  t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR',doc._get_url_order(), 75, 75)"/>
                         </div>
 

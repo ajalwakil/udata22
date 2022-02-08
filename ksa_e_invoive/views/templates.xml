@@ -24,23 +24,20 @@
                         <h5 style="color:#5e5353" t-if="company.name">
                             <span t-field="company.name"/>
                         </h5>
-                        <span t-if="company.vat">Vat No.
-                            <span class="" t-field="company.vat"/>
-                        </span>
                         <br/>
-                        <span t-if="company.company_registry">C.R
-                            <span class="" t-field="company.company_registry"/>
+                        <span t-if="company.vat">Vat NO
+                            <span class="" t-field="company.vat"/>
                         </span>
                         <br/>
                         <span t-if="company.phone">Phone
                             <span class="" t-field="company.phone"/>
                         </span>
                         <br/>
-                        <span t-if="company.city or company.city or company.street">
+                        <span>
                             <span class="" t-field="company.street"/>
-                            <br t-if="company.city or company.city" />
-                            <span t-if="company.city" t-field="company.city"/>
-                            <span  t-if="company.zip" t-field="company.zip"/>
+                            <br/>
+                            <span t-field="company.state_id.name"/>
+                            <span t-field="company.zip"/>
                         </span>
                         <br/>
                     </div>
@@ -50,15 +47,11 @@
                         <h5 style="color:#5e5353" dir="rtl" t-if="company.name">
                             <span t-field="company.arabic_name"/>
                         </h5>
+                        <br/>
                         <span t-if="company.vat">
                             <span class="" t-field="company.vat"/>
                         </span>
                         الرقم الضريبي
-                        <br/>
-                        <span t-if="company.company_registry">
-                            <span class="" t-field="company.company_registry"/>
-                        </span>
-                         س.ت
                         <br/>
                         <span t-if="company.phone">
                             <span class="" t-field="company.phone"/>
