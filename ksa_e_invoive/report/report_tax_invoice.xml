@@ -2,7 +2,7 @@
     <template id="report_electronic_tax_invoice_document">
         <t t-call="ksa_e_invoive.external_layout_invoice">
             <t t-set="customer"
-               t-value="o.partner_id"/>
+               t-value="o.partner_id.parent_id or o.partner_id"/>
             <t t-set="vendor"
                t-value="o.company_id"/>
             <t t-translation="off">
@@ -52,7 +52,7 @@
                         }
 
                         .border-gray {
-                        border: 1px solid #999999 !important;
+                        border: 1px solid #dee2e6;
                         }
 
                         .bold-black {
@@ -107,7 +107,7 @@
                         </h3>
                     </center>
                     <div class="row my-1 medium-font">
-                        <div class="col-7 force-left" style="margin-left: 15px">
+                        <div class="col-7 force-left" style="margin-left: 10px">
                             <div class="row border-gray">
                                 <div class="col-4">
                                     <Strong>Invoice Number</Strong>
@@ -163,6 +163,18 @@
                                     <Strong>الفرع</Strong>
                                 </div>
                             </div>
+                            <div class="row border-gray">
+                                <div class="col-4">
+                                    <Strong>Payment Terms</Strong>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <span t-field="o.invoice_payment_term_id.name"/>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <Strong>شروط الدفع</Strong>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="col-3 force-right" style="margin-left: 130px">
                             <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR',o.qrcode_info(vendor), 100, 100)"/>
@@ -171,13 +183,13 @@
                     </div>
                     <div class="oe_structure"/>
                     <div class="small-font small-div">
-                        <table class="table table-bordered none-border">
+                        <table class="table table-bordered none-border" style="margin:0px;padding:0px">
                             <tr class="none-border">
                                 <td class="no-padding none-border">
-                                    <Strong class="force-left ">Buyer :</Strong>
+                                    <Strong class="force-left ">Customer :</Strong>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.name"/>
+                                    <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["name"]}'/>
                                 </td>
                                 <td class="text-center no-padding none-border">
                                     <span t-esc="customer.arabic_name"/>
@@ -192,7 +204,7 @@
                                     <Strong class="force-left none-border">Building No :</Strong>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.building_no"/>
+                                    <span t-esc="customer.parent_id.building_no"/>
                                 </td>
                                 <td class="text-center no-padding none-border">
                                     <span t-esc="customer.arabic_building_no"/>
@@ -248,19 +260,19 @@
                                 </td>
 
                             </tr>
-                            <tr class="none-border none-border">
+                        </table>
+                        <table class="table table-bordered none-border" style="margin:0px;padding:0px">
+                            <tr class="none-border">
                                 <td class="no-padding none-border">
                                     <Strong class="force-left">Postal Code :</Strong>
                                 </td>
                                 <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.postal_code"/>
-                                </td>
-                                <td class="text-center no-padding none-border">
-                                    <span t-esc="customer.arabic_postal_code"/>
+                                    <span t-esc="customer.zip"/>
                                 </td>
                                 <td class="text-right no-padding none-border">
                                     <Strong class="force-right">: الرمز البريد</Strong>
                                 </td>
+
 
                             </tr>
                             <tr class="none-border">
@@ -270,22 +282,31 @@
                                 <td class="text-center none-border">
                                     <span t-esc="customer.vat"/>
                                 </td>
-                                <td class="text-center none-border">
-                                    <span t-esc="customer.vat"/>
-                                </td>
-
                                 <td class="text-right none-border">
                                     <Strong class="force-right">: رقم تسجيل الضريبة</Strong>
                                 </td>
 
                             </tr>
+                            <tr class="none-border">
+                                <td class="none-border">
+                                    <Strong class="force-left">Commercial Register:</Strong>
+                                </td>
+                                <td class="text-center none-border">
+                                    <span t-esc="customer.commercial_register"/>
+                                </td>
+                                <td class="text-right none-border">
+                                    <Strong class="force-right">: السجل التجاري</Strong>
+                                </td>
+
+                            </tr>
+
                         </table>
+
 
                     </div>
 
                     <table class="table table-bordered one-page">
                         <thead>
-
                             <tr class="ground-gray-black" style="font-size: 12px;">
                                 <th class="text-center">S.N
                                     <br/>
@@ -404,14 +425,14 @@
                         </tbody>
 
                     </table>
-                    <table class="table ">
-                        <tr>
-                            <td class="none-border" width="40%"></td>
-                            <td style="border: 1px solid black;">Total excluding VAT</td>
-                            <td style="border: 1px solid black;" class="text-center">
-                                اﻹجمالي غير شامل الصريبة
+                    <table class="table table-bordered pull-right" style="width:60%" >
+                        <tr >
+
+                            <td >Total excluding VAT</td>
+                            <td  class="text-center">
+                                اﻹجمالي غير شامل الضريبة
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td style="text-align: right !important;">
                                 <t t-set="line_total" t-value="0"/>
                                 <t t-set="total" t-value="0"/>
                                 <t t-foreach="lines" t-as="line">
@@ -423,59 +444,53 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="none-borde" width="40%"></td>
-                            <td style="border: 1px solid black;">Discount</td>
-                            <td style="border: 1px solid black;" class="text-center">
+
+                            <td >Discount</td>
+                            <td  class="text-center">
                                 مجموع الخصومات
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td style="text-align: right !important;">
                                 <span style="padding:10px" t-field="o.amount_discount"
-                                      t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="none-borde" width="40%"></td>
-                            <td style="border: 1px solid black;">Total Taxable Amount
+
+                            <td >Total Taxable Amount
                             </td>
-                            <td style="border: 1px solid black;" class="text-center">
+                            <td  class="text-center">
                                 الإجمالي الخاضع للضريبة
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td style="text-align: right !important;">
                                 <span style="padding:10px" t-field="o.amount_untaxed"
                                       t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="none-borde" width="40%"></td>
-                            <td style="border: 1px solid black;">Total VAT
+
+                            <td >Total VAT
                             </td>
-                            <td style="border: 1px solid black;" class="text-center">
+                            <td  class="text-center">
                                 مجموع الضريبة
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td style="text-align: right !important;">
                                 <span style="padding:10px" t-field="o.amount_tax"
                                       t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="none-borde" width="40%"></td>
-                            <td style="border: 1px solid black;">Total Amount Due
+                        <tr >
+
+                            <td class="ground-gray-black" >Total Amount Due
                             </td>
-                            <td style="border: 1px solid black;" class="text-center">
+                            <td   class="ground-gray-black text-center">
                                 إجمالي المبلغ المستحق
                             </td>
-                            <td style="border: 1px solid black;">
+                            <td class="ground-gray-black" style="text-align: right !important;">
                                 <span style="padding:10px" t-field="o.amount_total"
                                       t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                             </td>
                         </tr>
                     </table>
-                    <p t-if="o.invoice_payment_term_id" name="payment_term">
-                        <span t-field="o.invoice_payment_term_id.note"/>
-                    </p>
-                    <p t-if="o.fiscal_position_id.note" name="note">
-                        <span t-field="o.fiscal_position_id.note"/>
-                    </p>
 
                     <p t-if="o.invoice_terms_and_conditions" name="comment" style="width:49%;display: inline-block !important">
                         <span t-field="o.invoice_terms_and_conditions"/>
