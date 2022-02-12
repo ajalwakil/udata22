@@ -5,7 +5,8 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_draft']" position="after">
-                <button name="action_reversion" type="object" string="Reversion"  confirm="Are you sure you want create a new version" attrs="{'invisible': [('state', 'not in', ['draft', 'send'])]}"/>
+                <button name="action_reversion" type="object" string="Reversion"  confirm="Are you sure you want create a new version"
+                        attrs="{'invisible': ['|',('state', 'not in', ['draft', 'send']), ('id','=',False)]}"/>
             </xpath>
             <xpath expr="//field[@name='client_order_ref']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -25,7 +26,7 @@
                            attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
                 </page>
-                <page string="Reversion" name="reversion">
+                <page string="Reversion" name="reversion" attrs="{'invisible': [('sale_order_ids','=',[])]}">
                        <field name="sale_order_ids"></field>
 
                 </page>
@@ -36,10 +37,7 @@
 
 
     <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
-         <field name="domain">[]</field>
-    </record>
-    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
-         <field name="domain">[]</field>
+         <field name="domain">[("versioned", "=" , False)]</field>
     </record>
 
 

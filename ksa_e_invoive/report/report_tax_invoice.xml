@@ -492,13 +492,17 @@
                         </tr>
                     </table>
 
-                    <p t-if="o.invoice_terms_and_conditions" name="comment" style="width:49%;display: inline-block !important">
+                    <p t-if="o.invoice_terms_and_conditions" name="comment"
+                       style="width:49%;display: inline-block !important;font-size:12px">
                         <span t-field="o.invoice_terms_and_conditions"/>
                     </p>
-
-                    <p class="pull-right text-right" t-if="o.arabic_invoice_terms_and_conditions" name="comment" style="width:49%;display: inline-block !important">
+                    <p class="pull-right text-right" dir="rtl" t-if="o.arabic_invoice_terms_and_conditions"
+                       name="comment"
+                       style="width:49%;display: inline-block !important;font-size:12px">
                         <span t-field="o.arabic_invoice_terms_and_conditions"/>
                     </p>
+
+
 
 
                 </div>

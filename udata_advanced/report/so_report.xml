@@ -24,13 +24,14 @@
                 <div class="page" style="margin-top:50px">
                     <div class="oe_structure"/>
                     <div class="pull-right" style="width:40%">
-                        <div t-field="doc.partner_id" style="line-height: 100%;display: inline-block !important"
-                             t-options='{"widget": "contact", "fields": ["address", "name", "phone", "mobile", "email"], "phone_icons": True, "no_marker": True}'/>
-
-                        <div class="" style="display: inline-block !important;float:right">
+                                                <div class="" style="display: inline-block !important;float:right">
                             <img style="float:right"
                                  t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR',doc._get_url_order(), 75, 75)"/>
                         </div>
+
+                        <div t-field="doc.partner_id" style="line-height: 100%;display: inline-block !important"
+                             t-options='{"widget": "contact", "fields": ["address", "name", "phone", "mobile", "email"], "phone_icons": True, "no_marker": True}'/>
+
 
                         <p t-if="doc.partner_id.vat"><t
                                 t-esc="doc.company_id.account_fiscal_country_id.vat_label or 'Tax ID'"/>:
@@ -202,13 +203,13 @@
                                             <strong>Discount</strong>
                                         </td>
                                         <td name="td_amount_untaxed" class="text-right">
-                                            <t t-set="current_subtotal" t-value="0"/>
+                                            <t t-set="total_discount" t-value="0"/>
                                             <t t-foreach="doc.order_line" t-as="line">
-                                                <t t-set="current_subtotal"
-                                                   t-value="current_subtotal + (line.price_unit * line.discount / 100) * line.product_uom_qty or 0"/>
+                                                <t t-set="total_discount"
+                                                   t-value="total_discount + (line.price_unit * line.discount / 100) * line.product_uom_qty or 0"/>
                                             </t>
 
-                                            <span t-esc="current_subtotal"
+                                            <span t-esc="total_discount"
                                                   t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
 
 
@@ -249,12 +250,12 @@
                     <div class="oe_structure"/>
 
                     <p t-if="doc.sale_terms_and_conditions" name="comment"
-                       style="width:49%;display: inline-block !important">
+                       style="width:49%;display: inline-block !important;font-size:12px">
                         <span t-field="doc.sale_terms_and_conditions"/>
                     </p>
 
-                    <p class="pull-right text-right" t-if="doc.arabic_sale_terms_and_conditions" name="comment"
-                       style="width:49%;display: inline-block !important">
+                    <p class="pull-right text-right"  dir="rtl" t-if="doc.arabic_sale_terms_and_conditions" name="comment"
+                       style="width:49%;display: inline-block !important;font-size:12px">
                         <span t-field="doc.arabic_sale_terms_and_conditions"/>
                     </p>
 
