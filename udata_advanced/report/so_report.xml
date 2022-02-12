@@ -248,6 +248,7 @@
 
 
                     <div class="oe_structure"/>
+                    <br/>
 
                     <p t-if="doc.sale_terms_and_conditions" name="comment"
                        style="width:49%;display: inline-block !important;font-size:12px">
