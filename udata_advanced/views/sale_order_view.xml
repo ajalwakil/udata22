@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_draft']" position="after">
                 <button name="action_reversion" type="object" string="Reversion"  confirm="Are you sure you want create a new version"
-                        attrs="{'invisible': ['|',('state', 'not in', ['draft', 'send']), ('id','=',False)]}"/>
+                        attrs="{'invisible': ['|',('state', 'not in', ['draft', 'sent']), ('id','=',False)]}"/>
             </xpath>
             <xpath expr="//field[@name='client_order_ref']" position="attributes">
                 <attribute name="invisible">1</attribute>
